@@ -15,14 +15,14 @@ import { Application, Graphics, Container, TextStyle, Text, Texture, Sprite } fr
   app.canvas.style.left = 0;
 
   // Create a texture from the image file
-const bgPattern_text = Texture.from("bg_pattern2.png");
+const bgPattern_text = Texture.from("/public/images/bg_pattern2.png");
 const bgPattern = new Sprite(bgPattern_text);
 bgPattern.width = window.innerWidth;
 bgPattern.height = window.innerHeight;
 app.stage.addChild(bgPattern);
 
 // Create a texture from the image file
-const texture = Texture.from("Center.webp");
+const texture = Texture.from("/public/images/Center.webp");
 
 // Create a sprite using the texture
 const sprite = new Sprite(texture);
