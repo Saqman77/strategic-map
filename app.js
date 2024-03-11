@@ -26,27 +26,6 @@ import {
   app.canvas.style.top = 0;
   app.canvas.style.left = 0;
 
-  // Create a texture from the image file
-  const texture = Texture.from("/images/Center.webp");
-
-  // Create a sprite using the texture
-  const sprite = new Sprite(texture);
-
-  // Center the sprite
-  sprite.anchor.set(0.5, 0.5);
-  sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
-  sprite.position.y = app.screen.height / 2;
-  sprite.width = 706.03;
-  sprite.height = 606.03;
-  app.stage.addChild(sprite);
-
-  const bgVignette_text = Texture.from("/images/Vignette.webp");
-  // Create a sprite using the texture
-  const bgVignette = new Sprite(bgVignette_text);
-  bgVignette.width = window.innerWidth;
-  bgVignette.height = window.innerHeight;
-  app.stage.addChild(bgVignette);
-
   // Load the star texture
   const starTexture = await Assets.load("/images/bg-star.png");
 
@@ -120,10 +99,37 @@ import {
 
   // Create a texture from the image file
   await Assets.load([
-    "/images/bg_pattern2.png",
     "/images/Center.webp",
     "/images/Vignette.webp",
   ]);
+
+  // Create a texture from the image file
+  const texture = Texture.from("/images/Center.webp");
+
+  // Create a sprite using the texture
+  const sprite = new Sprite(texture);
+
+  // Center the sprite
+  sprite.anchor.set(0.5, 0.5);
+  sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
+  sprite.position.y = app.screen.height / 2;
+  sprite.width = 706.03;
+  sprite.height = 606.03;
+  app.stage.addChild(sprite);
+
+  const bgVignette_text = Texture.from("/images/Vignette.webp");
+  // Create a sprite using the texture
+  const bgVignette = new Sprite(bgVignette_text);
+  bgVignette.width = window.innerWidth;
+  bgVignette.height = window.innerHeight;
+  // bgVignette.style.position = "absolute";
+  // bgVignette.style.top = 0;
+  // bgVignette.style.left = 0;
+  // bgVignette.style.bottom = 0;
+  // bgVignette.style.right = 0;
+  // bgVignette.zIndex = 2;
+  // app.stage.addChild(bgVignette);
+
 
   // const bgPattern_text = Texture.from("/images/bg_pattern2.png");
   // const bgPattern = new Sprite(bgPattern_text);
@@ -138,9 +144,10 @@ import {
     // Create a circle
     const circle = new Graphics();
     circle
-      .setStrokeStyle(1, 0x000000)
-      .fill(0xffffff) // White fill color
-      .circle(0, 0, radius);
+      .lineStyle(1, 0x000000)
+      .beginFill(0xffffff) // White fill color
+      .drawCircle(0, 0, radius)
+      .endFill();
 
     // Set the circle position
     circle.x = x;
