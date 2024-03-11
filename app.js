@@ -15,16 +15,16 @@ import { Assets, Application, Graphics, Container, TextStyle, Text, Texture, Spr
   app.canvas.style.left = 0;
 
   // Create a texture from the image file
-  await Assets.load(['/public/images/bg_pattern2.png', '/public/images/Center.webp', '/public/images/Vignette.webp']);
+  await Assets.load(['/images/bg_pattern2.png', '/images/Center.webp', '/images/Vignette.webp']);
 
-const bgPattern_text = Texture.from("/public/images/bg_pattern2.png");
+const bgPattern_text = Texture.from("/images/bg_pattern2.png");
 const bgPattern = new Sprite(bgPattern_text);
 bgPattern.width = window.innerWidth;
 bgPattern.height = window.innerHeight;
 app.stage.addChild(bgPattern);
 
 // Create a texture from the image file
-const texture = Texture.from("/public/images/Center.webp");
+const texture = Texture.from("/images/Center.webp");
 
 // Create a sprite using the texture
 const sprite = new Sprite(texture);
@@ -37,7 +37,7 @@ sprite.width = 706.03;
 sprite.height = 606.03;
 app.stage.addChild(sprite);
 
-const bgVignette_text = Texture.from("/public/images/Vignette.webp");
+const bgVignette_text = Texture.from("/images/Vignette.webp");
 // Create a sprite using the texture
 const bgVignette = new Sprite(bgVignette_text);
 bgVignette.width = window.innerWidth;
