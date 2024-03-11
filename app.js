@@ -222,6 +222,23 @@ import {
     234.77,
     "An ambitious nation"
   );
+
+  // Load the first image
+  const imageTexture1 = await Assets.load("./images/buttonminus.png"); // Replace with the path to your first image
+  const imageSprite1 = new Sprite(imageTexture1);
+  imageSprite1.x = 62;
+  imageSprite1.y = 500;
+  imageSprite1.anchor.set(0.5);
+  app.stage.addChild(imageSprite1);
+  
+  // Load the second image
+  const imageTexture2 = await Assets.load("./images/buttonplus.png"); // Replace with the path to your second image
+  const imageSprite2 = new Sprite(imageTexture2);
+  imageSprite2.x = 130;
+  imageSprite2.y = 500;
+  imageSprite2.anchor.set(0.5);
+  app.stage.addChild(imageSprite2);
+
   // const ellipseSprite = new Sprite(ellipseTexture);
 
   // const circle1Container = new Container();
