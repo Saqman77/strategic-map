@@ -51,10 +51,9 @@ function createCircle(x, y, radius, text) {
   // Create a circle
   const circle = new Graphics();
   circle
-    .lineStyle(1, 0x000000)
-    .beginFill(0xffffff) // White fill color
-    .drawCircle(0, 0, radius)
-    .endFill();
+    .setStrokeStyle(1, 0x000000)
+    .fill(0xffffff) // White fill color
+    .circle(0, 0, radius);
 
   // Set the circle position
   circle.x = x;
