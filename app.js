@@ -15,7 +15,7 @@ import { Application, Graphics, Assets, Sprite } from "pixi.js";
   app.canvas.style.left = 0;
 
    // Load the star texture
-   const starTexture = await Assets.load('/public/images/bg-star.png');
+   const starTexture = await Assets.load('/images/bg-star.png');
 
    const starAmount = 1000;
    let cameraZ = 0;
