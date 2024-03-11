@@ -18,6 +18,23 @@ import {
     antialias: true,
   });
 
+   // Create a texture from the image file
+   await Assets.load(["/images/Center.webp", "/images/Vignette.webp"]);
+
+   // Create a texture from the image file
+   const texture = Texture.from("/images/Center.webp");
+ 
+   // Create a sprite using the texture
+   const sprite = new Sprite(texture);
+ 
+   // Center the sprite
+   sprite.anchor.set(0.5, 0.5);
+   sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
+   sprite.position.y = app.screen.height / 2;
+   sprite.width = 1213;
+   sprite.height = 1080;
+   app.stage.addChild(sprite);
+
   // Append the application canvas to the document body
   document.body.appendChild(app.canvas);
 
@@ -97,42 +114,20 @@ import {
     }
   });
 
-  // Create a texture from the image file
-  await Assets.load(["/images/Center.webp", "/images/Vignette.webp"]);
-
-  // Create a texture from the image file
-  const texture = Texture.from("/images/Center.webp");
-
-  // Create a sprite using the texture
-  const sprite = new Sprite(texture);
-
-  // Center the sprite
-  sprite.anchor.set(0.5, 0.5);
-  sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
-  sprite.position.y = app.screen.height / 2;
-  sprite.width = 706.03;
-  sprite.height = 606.03;
-  app.stage.addChild(sprite);
-
   const bgVignette_text = Texture.from("/images/Vignette.webp");
-  // Create a sprite using the texture
-  const bgVignette = new Sprite(bgVignette_text);
-  bgVignette.width = window.innerWidth;
-  bgVignette.height = window.innerHeight;
-  // bgVignette.style.position = "absolute";
-  // bgVignette.style.top = 0;
-  // bgVignette.style.left = 0;
-  // bgVignette.style.bottom = 0;
-  // bgVignette.style.right = 0;
-  // bgVignette.zIndex = 2;
-  // app.stage.addChild(bgVignette);
+   // Create a sprite using the texture
+   const bgVignette = new Sprite(bgVignette_text);
+   bgVignette.width = window.innerWidth;
+   bgVignette.height = window.innerHeight;
+ 
+   // const bgPattern_text = Texture.from("/images/bg_pattern2.png");
+   // const bgPattern = new Sprite(bgPattern_text);
+   // bgPattern.width = window.innerWidth;
+   // bgPattern.height = window.innerHeight;
+   // app.stage.addChild(bgPattern);
+ 
 
-  // const bgPattern_text = Texture.from("/images/bg_pattern2.png");
-  // const bgPattern = new Sprite(bgPattern_text);
-  // bgPattern.width = window.innerWidth;
-  // bgPattern.height = window.innerHeight;
-  // app.stage.addChild(bgPattern);
-
+ 
   const stage = new Container();
   app.stage.addChild(stage);
 
