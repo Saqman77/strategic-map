@@ -183,7 +183,20 @@ import {
       align: "center",
     });
 
-    const textObject = new Text({ text, textStyle });
+    // Enable the Ellipse to be interactive... this will allow it to respond to mouse and touch events
+    ellipseSprite.eventMode = 'static';
+
+    // This button mode will mean the hand cursor appears when you roll over the Ellipse with your mouse
+    ellipseSprite.cursor = 'pointer';
+
+    // Setup events for mouse + touch using the pointer events
+    ellipseSprite.on('pointerdown', onDragStart, ellipseSprite);
+
+    // Move the sprite to its designated position
+    ellipseSprite.x = x;
+    ellipseSprite.y = y;
+
+    const textObject = new Text({ text: text, textStyle: textStyle });
     textObject.anchor.set(0.5); // Center the text
 
     // Add the circle and text to the stage
@@ -222,6 +235,43 @@ import {
     234.77,
     "An ambitious nation"
   );
+
+  // Enable Dragging on ellipses
+  let dragTarget = null;
+
+    app.stage.eventMode = 'static';
+    app.stage.hitArea = app.screen;
+    app.stage.on('pointerup', onDragEnd);
+    app.stage.on('pointerupoutside', onDragEnd);
+
+    function onDragMove(event)
+    {
+        if (dragTarget)
+        {
+            dragTarget.parent.toLocal(event.global, null, dragTarget.position);
+        }
+    }
+
+    function onDragStart()
+    {
+        // Store a reference to the data
+        // * The reason for this is because of multitouch *
+        // * We want to track the movement of this particular touch *
+        this.alpha = 0.5;
+        dragTarget = this;
+        app.stage.on('pointermove', onDragMove);
+    }
+
+    function onDragEnd()
+    {
+        if (dragTarget)
+        {
+            app.stage.off('pointermove', onDragMove);
+            dragTarget.alpha = 1;
+            dragTarget = null;
+        }
+    }
+
   
   // Create a new Text object
   const text1 = new Text("Strategic Objectives", {
@@ -320,33 +370,5 @@ import {
   imageSprite2.anchor.set(0.5);
   app.stage.addChild(imageSprite2);
 
-  // const ellipseSprite = new Sprite(ellipseTexture);
-
-  // const circle1Container = new Container();
-  // // ellipseSprite.anchor.set(0.5);
-  // ellipseSprite.position.x = window.innerWidth / 100 * 27.5;
-  // ellipseSprite.position.y = window.innerHeight / 100 * 6.5;
-
-  // ellipseSprite.width = 234.77;
-  // ellipseSprite.height = 234.77;
-
-  // stage.addChild(ellipseSprite);
-
-  //  shapes are store in Graphics
-  // const Graphics = Graphics;
-  // const rectangle = new Graphics();
-  // const circle = new Graphics();
-
-  // rectangle
-  // .setStrokeStyle(2, 0x000000)
-  // .rect(200, 200, 100, 120)
-  // .fill(0xaa33bb);
-  // app.stage.addChild(rectangle);
-
-  // circle
-  //   .setStrokeStyle(2, 0x2bdb8a)
-  //   .circle(200, 400, 50)
-  //   .fill(0x464646);
-
-  // app.stage.addChild(circle);
+  
 })();
