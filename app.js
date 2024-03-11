@@ -98,10 +98,7 @@ import {
   });
 
   // Create a texture from the image file
-  await Assets.load([
-    "/images/Center.webp",
-    "/images/Vignette.webp",
-  ]);
+  await Assets.load(["/images/Center.webp", "/images/Vignette.webp"]);
 
   // Create a texture from the image file
   const texture = Texture.from("/images/Center.webp");
@@ -130,7 +127,6 @@ import {
   // bgVignette.zIndex = 2;
   // app.stage.addChild(bgVignette);
 
-
   // const bgPattern_text = Texture.from("/images/bg_pattern2.png");
   // const bgPattern = new Sprite(bgPattern_text);
   // bgPattern.width = window.innerWidth;
@@ -140,40 +136,108 @@ import {
   const stage = new Container();
   app.stage.addChild(stage);
 
-  function createCircle(x, y, radius, text) {
-    // Create a circle
-    const circle = new Graphics();
-    circle
-      .lineStyle(1, 0x000000)
-      .beginFill(0xffffff) // White fill color
-      .drawCircle(0, 0, radius)
-      .endFill();
+  // function createCircle(x, y, radius, text) {
+  //   // Create a circle
+  //   const circle = new Graphics();
+  //   circle
+  //     .lineStyle(1, 0x000000)
+  //     .beginFill(0xffffff) // White fill color
+  //     .drawCircle(0, 0, radius)
+  //     .endFill();
 
-    // Set the circle position
-    circle.x = x;
-    circle.y = y;
+  //   // Set the circle position
+  //   circle.x = x;
+  //   circle.y = y;
+
+  //   // Add text to the circle
+  //   const textStyle = new TextStyle({
+  //     fontSize: 16,
+  //     fill: 0x000000, // Black text color
+  //     wordWrap: true,
+  //     wordWrapWidth: radius * 2, // Wrap text within the circle
+  //     align: "center",
+  //   });
+
+  //   const textObject = new Text(text, textStyle);
+  //   textObject.anchor.set(0.5); // Center the text
+
+  //   // Add the circle and text to the stage
+  //   stage.addChild(circle);
+  //   circle.addChild(textObject);
+  // }
+
+  function createEllipse(ellipseTexture, x, y, width, height, text) {
+    // Create a circle
+    const circleContainer = new Container();
+    const ellipseSprite = new Sprite(ellipseTexture);
+
+    ellipseSprite.anchor.set(0.5);
+    ellipseSprite.position.x = x;
+    ellipseSprite.position.y = y;
+
+    // Ellipse's width and height
+    ellipseSprite.width = width;
+    ellipseSprite.height = height;
 
     // Add text to the circle
     const textStyle = new TextStyle({
       fontSize: 16,
       fill: 0x000000, // Black text color
       wordWrap: true,
-      wordWrapWidth: radius * 2, // Wrap text within the circle
+      // wordWrapWidth: radius * 2, // Wrap text within the circle
       align: "center",
     });
 
-    const textObject = new Text(text, textStyle);
+    const textObject = new Text({ text, textStyle });
     textObject.anchor.set(0.5); // Center the text
 
     // Add the circle and text to the stage
-    circle.addChild(textObject);
-    stage.addChild(circle);
+    circleContainer.addChild(ellipseSprite);
+    circleContainer.addChild(textObject);
+    stage.addChild(circleContainer);
   }
   //
   // Create three circles with text at different positions
-  createCircle(527, 124, 117.385, "A vibrant society");
-  createCircle(956, 220, 117.385, "A thriving economy");
-  createCircle(536, 400, 117.385, "An ambitious nation");
+  // createCircle(527, 124, 117.385, "A vibrant society");
+  // createCircle(window.innerWidth - 612, 220, 117.385, "A thriving economy");
+  // createCircle(536, 400, 117.385, "An ambitious nation");
+
+  const ellipseTexture = await Assets.load("/images/Ellipse-18.png");
+  createEllipse(
+    ellipseTexture,
+    (window.innerWidth / 100) * 27.5 + 117.385,
+    (window.innerHeight / 100) * 11.5 + 117.385,
+    234.77,
+    234.77,
+    "A vibrant society"
+  );
+  createEllipse(
+    ellipseTexture,
+    (window.innerWidth / 100) * 28 + 117.385,
+    (window.innerHeight / 100) * 75.8 + 117.385,
+    234.77,
+    234.77,
+    "A thriving economy"
+  );
+  createEllipse(
+    ellipseTexture,
+    (window.innerWidth / 100) * 68.12 + 117.385,
+    (window.innerHeight / 100) * 33.2 + 117.385,
+    234.77,
+    234.77,
+    "An ambitious nation"
+  );
+  // const ellipseSprite = new Sprite(ellipseTexture);
+
+  // const circle1Container = new Container();
+  // // ellipseSprite.anchor.set(0.5);
+  // ellipseSprite.position.x = window.innerWidth / 100 * 27.5;
+  // ellipseSprite.position.y = window.innerHeight / 100 * 6.5;
+
+  // ellipseSprite.width = 234.77;
+  // ellipseSprite.height = 234.77;
+
+  // stage.addChild(ellipseSprite);
 
   //  shapes are store in PIXI.Graphics
   // const Graphics = Graphics;
