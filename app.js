@@ -1,4 +1,4 @@
-import { Application, Graphics, Assets, Sprite } from "pixi.js";
+import { Assets, Application, Graphics, Container, TextStyle, Text, Texture, Sprite } from "pixi.js";
 
 (async () => {
   // const Application = PIXI.Application;
@@ -81,6 +81,74 @@ import { Application, Graphics, Assets, Sprite } from "pixi.js";
             star.sprite.rotation = Math.atan2(dyCenter, dxCenter) + Math.PI / 2;
         }
     });
+
+  // Create a texture from the image file
+  await Assets.load(['/images/bg_pattern2.png', '/images/Center.webp', '/images/Vignette.webp']);
+
+const bgPattern_text = Texture.from("/images/bg_pattern2.png");
+const bgPattern = new Sprite(bgPattern_text);
+bgPattern.width = window.innerWidth;
+bgPattern.height = window.innerHeight;
+app.stage.addChild(bgPattern);
+
+// Create a texture from the image file
+const texture = Texture.from("/images/Center.webp");
+
+// Create a sprite using the texture
+const sprite = new Sprite(texture);
+
+// Center the sprite
+sprite.anchor.set(0.5, 0.5);
+sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
+sprite.position.y = app.screen.height / 2;
+sprite.width = 706.03;
+sprite.height = 606.03;
+app.stage.addChild(sprite);
+
+const bgVignette_text = Texture.from("/images/Vignette.webp");
+// Create a sprite using the texture
+const bgVignette = new Sprite(bgVignette_text);
+bgVignette.width = window.innerWidth;
+bgVignette.height = window.innerHeight;
+app.stage.addChild(bgVignette);
+
+  const stage = new Container();
+app.stage.addChild(stage);
+
+function createCircle(x, y, radius, text) {
+  // Create a circle
+  const circle = new Graphics();
+  circle
+    .setStrokeStyle(1, 0x000000)
+    .fill(0xffffff) // White fill color
+    .circle(0, 0, radius);
+
+  // Set the circle position
+  circle.x = x;
+  circle.y = y;
+
+  // Add text to the circle
+  const textStyle = new TextStyle({
+    fontSize: 16,
+    fill: 0x000000, // Black text color
+    wordWrap: true,
+    wordWrapWidth: radius * 2, // Wrap text within the circle
+    align: "center",
+  });
+
+  const textObject = new Text(text, textStyle);
+  textObject.anchor.set(0.5); // Center the text
+
+  // Add the circle and text to the stage
+  circle.addChild(textObject);
+  stage.addChild(circle);
+}
+//  
+// Create three circles with text at different positions
+createCircle(527, 124,117.385, "A vibrant society");
+createCircle(956, 220, 117.385 , "A thriving economy");
+createCircle(536, 400, 117.385, "An ambitious nation");
+
 
 
   //  shapes are store in PIXI.Graphics
