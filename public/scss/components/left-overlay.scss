@@ -1,0 +1,9 @@
+.c-overlay-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 480px;
+  background: linear-gradient(to right, #000000, #00000000);
+  z-index: 1;
+}

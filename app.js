@@ -17,19 +17,21 @@ import { Application, Graphics } from "pixi.js";
 
   //  shapes are store in PIXI.Graphics
   // const Graphics = Graphics;
-  const rectangle = new Graphics();
-  const circle = new Graphics();
+  // const rectangle = new Graphics();
+  // const circle = new Graphics();
 
-  rectangle
-  .setStrokeStyle(2, 0x000000)
-  .rect(200, 200, 100, 120)
-  .fill(0xaa33bb);
-  app.stage.addChild(rectangle);
 
-  circle
-    .setStrokeStyle(2, 0x2bdb8a)
-    .circle(200, 400, 50)
-    .fill(0x464646);
 
-  app.stage.addChild(circle);
+  // rectangle
+  // .setStrokeStyle(2, 0x000000)
+  // .rect(200, 200, 100, 120)
+  // .fill(0xaa33bb);
+  // app.stage.addChild(rectangle);
+
+  // circle
+  //   .setStrokeStyle(2, 0x2bdb8a)
+  //   .circle(200, 400, 50)
+  //   .fill(0x464646);
+
+  // app.stage.addChild(circle);
 })();
