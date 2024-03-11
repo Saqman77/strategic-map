@@ -1,7 +1,7 @@
 const app = new PIXI.Application({
   width: window.innerWidth,
   height: window.innerHeight,
-  backgroundColor: 0xbfefff,
+  backgroundColor: 0x23395d,
 });
 // app.view itself canva h style css ki property h ap jo use kro
 document.body.appendChild(app.view);
@@ -12,11 +12,10 @@ app.stage.addChild(circleContainer);
 
 // Create a circle
 const circle = new PIXI.Graphics();
-circle.beginFill(0xffb6c1); // Set the fill color (red in this case)
-circle.drawCircle(527, 124, 90); // x, y, radius
-circle.endFill();
-
-// Add the circle to the container
+circle
+  .lineStyle(1, 0x000000)
+  .beginFill(0xffb6c1) // Set the fill color (red in this case)
+  .drawCircle(527, 124, 90); // x, y, radius
 circleContainer.addChild(circle);
 
 // Create text
@@ -31,3 +30,6 @@ text.position.set(470, 120);
 
 // Add text to the container
 circleContainer.addChild(text);
+
+// circle 2
+
