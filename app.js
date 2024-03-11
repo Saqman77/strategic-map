@@ -1,4 +1,4 @@
-import { Application, Graphics, Container, TextStyle, Text } from "pixi.js";
+import { Application, Graphics, Container, TextStyle, Text, Texture, Sprite } from "pixi.js";
 
 (async () => {
   // const Application = PIXI.Application;
@@ -13,6 +13,34 @@ import { Application, Graphics, Container, TextStyle, Text } from "pixi.js";
   app.canvas.style.position = "absolute";
   app.canvas.style.top = 0;
   app.canvas.style.left = 0;
+
+  // Create a texture from the image file
+const bgPattern_text = Texture.from("bg_pattern2.png");
+const bgPattern = new Sprite(bgPattern_text);
+bgPattern.width = window.innerWidth;
+bgPattern.height = window.innerHeight;
+app.stage.addChild(bgPattern);
+
+// Create a texture from the image file
+const texture = Texture.from("Center.webp");
+
+// Create a sprite using the texture
+const sprite = new Sprite(texture);
+
+// Center the sprite
+sprite.anchor.set(0.5, 0.5);
+sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
+sprite.position.y = app.screen.height / 2;
+sprite.width = 706.03;
+sprite.height = 606.03;
+app.stage.addChild(sprite);
+
+const bgVignette_text = Texture.from("Vignette.webp");
+// Create a sprite using the texture
+const bgVignette = new Sprite(bgVignette_text);
+bgVignette.width = window.innerWidth;
+bgVignette.height = window.innerHeight;
+app.stage.addChild(bgVignette);
 
   const stage = new Container();
 app.stage.addChild(stage);
