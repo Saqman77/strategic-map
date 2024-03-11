@@ -1,4 +1,4 @@
-import { Application, Graphics, Container, TextStyle, Text, Texture, Sprite } from "pixi.js";
+import { Assets, Application, Graphics, Container, TextStyle, Text, Texture, Sprite } from "pixi.js";
 
 (async () => {
   // const Application = PIXI.Application;
@@ -15,6 +15,8 @@ import { Application, Graphics, Container, TextStyle, Text, Texture, Sprite } fr
   app.canvas.style.left = 0;
 
   // Create a texture from the image file
+  await Assets.load(['/public/images/bg_pattern2.png', '/public/images/Center.webp', '/public/images/Vignette.webp']);
+
 const bgPattern_text = Texture.from("/public/images/bg_pattern2.png");
 const bgPattern = new Sprite(bgPattern_text);
 bgPattern.width = window.innerWidth;
@@ -35,7 +37,7 @@ sprite.width = 706.03;
 sprite.height = 606.03;
 app.stage.addChild(sprite);
 
-const bgVignette_text = Texture.from("Vignette.webp");
+const bgVignette_text = Texture.from("/public/images/Vignette.webp");
 // Create a sprite using the texture
 const bgVignette = new Sprite(bgVignette_text);
 bgVignette.width = window.innerWidth;
