@@ -106,13 +106,30 @@ import {
       // Calculate star scale & rotation.
       const dxCenter = star.sprite.x - app.renderer.screen.width / 2;
       const dyCenter = star.sprite.y - app.renderer.screen.height / 2;
-      const distanceCenter = Math.sqrt(
-        dxCenter * dxCenter + dyCenter * dyCenter
-      );
+      // const distanceCenter = Math.sqrt(
+      //   dxCenter * dxCenter + dyCenter * dyCenter
+      // );
 
       star.sprite.rotation = Math.atan2(dyCenter, dxCenter) + Math.PI / 2;
     }
   });
+
+  // Create a texture from the image file
+  await Assets.load(["/images/Center.webp", "/images/Vignette.webp"]);
+
+  // Create a texture from the image file
+  const texture = Texture.from("/images/Center.webp");
+
+  // Create a sprite using the texture
+  const sprite = new Sprite(texture);
+
+  // Center the sprite
+  sprite.anchor.set(0.5, 0.5);
+  sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
+  sprite.position.y = app.screen.height / 2;
+  sprite.width = 1213;
+  sprite.height = 1080;
+  app.stage.addChild(sprite);
 
   const bgVignette_text = Texture.from("/images/Vignette.webp");
   // Create a sprite using the texture
@@ -158,6 +175,12 @@ import {
   //   stage.addChild(circle);
   //   circle.addChild(textObject);
   // }
+  // const torusShape = new Graphics();
+  // torusShape
+  //   .strokeStyle(0x000000);
+  //   .
+
+  // const ellipsesContainer = new Container();
 
   function createEllipse(ellipseTexture, x, y, width, height, text) {
     // Create a circle
@@ -181,7 +204,20 @@ import {
       align: "center",
     });
 
-    const textObject = new Text({ text, textStyle });
+    // Enable the Ellipse to be interactive... this will allow it to respond to mouse and touch events
+    ellipseSprite.eventMode = 'static';
+
+    // This button mode will mean the hand cursor appears when you roll over the Ellipse with your mouse
+    ellipseSprite.cursor = 'pointer';
+
+    // Setup events for mouse + touch using the pointer events
+    ellipseSprite.on('pointerdown', onDragStart, ellipseSprite);
+
+    // Move the sprite to its designated position
+    ellipseSprite.x = x;
+    ellipseSprite.y = y;
+
+    const textObject = new Text({ text: text, textStyle: textStyle });
     textObject.anchor.set(0.5); // Center the text
 
     // Add the circle and text to the stage
@@ -221,6 +257,43 @@ import {
     "An ambitious nation"
   );
 
+  // Enable Dragging on ellipses
+  let dragTarget = null;
+
+    app.stage.eventMode = 'static';
+    app.stage.hitArea = app.screen;
+    app.stage.on('pointerup', onDragEnd);
+    app.stage.on('pointerupoutside', onDragEnd);
+
+    function onDragMove(event)
+    {
+        if (dragTarget)
+        {
+            dragTarget.parent.toLocal(event.global, null, dragTarget.position);
+        }
+    }
+
+    function onDragStart()
+    {
+        // Store a reference to the data
+        // * The reason for this is because of multitouch *
+        // * We want to track the movement of this particular touch *
+        this.alpha = 0.5;
+        dragTarget = this;
+        app.stage.on('pointermove', onDragMove);
+    }
+
+    function onDragEnd()
+    {
+        if (dragTarget)
+        {
+            app.stage.off('pointermove', onDragMove);
+            dragTarget.alpha = 1;
+            dragTarget = null;
+        }
+    }
+
+  
   // Create a new Text object
   const text1 = new Text("Strategic Objectives", {
     fontFamily: "Arial",
@@ -317,13 +390,13 @@ import {
   imageSpritebtnminus.anchor.set(0.5);
   app.stage.addChild(imageSpritebtnminus);
 
-  // adding cursor
-  const imageTexturecursor = await Assets.load("./images/cursor.png");
-  const imageSpritecursor = new Sprite(imageTexturecursor);
-  imageSpritecursor.x = 1474;
-  imageSpritecursor.y = 817;
-  imageSpritecursor.anchor.set(0.5);
-  app.stage.addChild(imageSpritecursor);
+    // adding cursor
+    const imageTexturecursor = await Assets.load("./images/cursor.png");
+    const imageSpritecursor = new Sprite(imageTexturecursor);
+    imageSpritecursor.x = 1474;
+    imageSpritecursor.y = 817;
+    imageSpritecursor.anchor.set(0.5);
+    app.stage.addChild(imageSpritecursor);
 
   // const ellipseSprite = new Sprite(ellipseTexture);
 
