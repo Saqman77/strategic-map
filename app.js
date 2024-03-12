@@ -18,23 +18,6 @@ import {
     antialias: true,
   });
 
-   // Create a texture from the image file
-   await Assets.load(["/images/Center.webp", "/images/Vignette.webp"]);
-
-   // Create a texture from the image file
-   const texture = Texture.from("/images/Center.webp");
- 
-   // Create a sprite using the texture
-   const sprite = new Sprite(texture);
- 
-   // Center the sprite
-   sprite.anchor.set(0.5, 0.5);
-   sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
-   sprite.position.y = app.screen.height / 2;
-   sprite.width = 1213;
-   sprite.height = 1080;
-   app.stage.addChild(sprite);
-
   // Append the application canvas to the document body
   document.body.appendChild(app.canvas);
 
@@ -106,13 +89,30 @@ import {
       // Calculate star scale & rotation.
       const dxCenter = star.sprite.x - app.renderer.screen.width / 2;
       const dyCenter = star.sprite.y - app.renderer.screen.height / 2;
-      const distanceCenter = Math.sqrt(
-        dxCenter * dxCenter + dyCenter * dyCenter
-      );
+      // const distanceCenter = Math.sqrt(
+      //   dxCenter * dxCenter + dyCenter * dyCenter
+      // );
 
       star.sprite.rotation = Math.atan2(dyCenter, dxCenter) + Math.PI / 2;
     }
   });
+
+  // Create a texture from the image file
+  await Assets.load(["/images/Center.webp", "/images/Vignette.webp"]);
+
+  // Create a texture from the image file
+  const texture = Texture.from("/images/Center.webp");
+
+  // Create a sprite using the texture
+  const sprite = new Sprite(texture);
+
+  // Center the sprite
+  sprite.anchor.set(0.5, 0.5);
+  sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
+  sprite.position.y = app.screen.height / 2;
+  sprite.width = 1213;
+  sprite.height = 1080;
+  app.stage.addChild(sprite);
 
   const bgVignette_text = Texture.from("/images/Vignette.webp");
    // Create a sprite using the texture
@@ -160,6 +160,12 @@ import {
   //   stage.addChild(circle);
   //   circle.addChild(textObject);
   // }
+  // const torusShape = new Graphics();
+  // torusShape
+  //   .strokeStyle(0x000000);
+  //   .
+
+  // const ellipsesContainer = new Container();
 
   function createEllipse(ellipseTexture, x, y, width, height, text) {
     // Create a circle
