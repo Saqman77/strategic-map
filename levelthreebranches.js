@@ -190,11 +190,11 @@ import {
   //   imageSpritecursor.anchor.set(0.5);
   //   app.stage.addChild(imageSpritecursor);
 
-  ///////////////////////////////////
-  //changes in code below
+  /////////////////////////////////////////////////////////////////////////////////
+  //changes in code below   level three
+  /////////////////////////////////////////////////////////////////////////////////
 
   const marginEllipse = 1000.55; // Right side margin in Figma
-
   // Calculate the x position of the element within the container
   const containerWidth = window.innerWidth; // Width of the container
 
@@ -272,7 +272,7 @@ import {
 
   document.body.appendChild(app.canvas);
 
-  const margin = 522; // Right side margin in Figma
+  const margin = 600; // Right side margin in Figma
   const containerWidthx = window.innerWidth; // Width of the container
   // Calculate the x position of the element within the container
   const elementX = containerWidthx - margin; //1920-522
@@ -291,11 +291,11 @@ import {
 
   const stateDefault = await createSprite(
     "./images/StateDefault.webp",
-    { x: elementX, y: 250 },
+    { x: elementX, y: 280 },
     { width: 200, height: 200 }
   );
 
-  const text = new Text(
+  const texta = new Text(
     "  Develop Human Capital in line with labor market needs",
     {
       fontFamily: "Arial",
@@ -303,9 +303,65 @@ import {
       fill: 0xffffff,
       wordWrap: true,
       wordWrapWidth: 210,
+      align: "center",
     }
   );
-  text.x = 1300;
-  text.y = 365;
-  app.stage.addChild(text);
+  texta.x = 1220;
+  texta.y = 400;
+  app.stage.addChild(texta);
+
+  const stateDefault2 = await createSprite(
+    "./images/StateDefault.webp",
+    { x: elementX + 60, y: 550 },
+    { width: 160, height: 160 }
+  );
+  const textb = new Text("  Ensuring equal access to job opportunities", {
+    fontFamily: "Arial",
+    fontSize: 16,
+    fill: 0xffffff,
+    wordWrap: true,
+    wordWrapWidth: 210,
+    align: "center",
+  });
+  textb.x = 1280;
+  textb.y = 640;
+  app.stage.addChild(textb);
+
+  const stateDefault3 = await createSprite(
+    "./images/StateDefault.webp",
+    { x: elementX - 90, y: 820 },
+    { width: 180, height: 180 }
+  );
+  const textc = new Text(
+    "Enable job creation through SMEs and Micro-enterprises",
+    {
+      fontFamily: "Arial",
+      fontSize: 16,
+      fill: 0xffffff,
+      wordWrap: true,
+      wordWrapWidth: 210,
+      align: "center",
+    }
+  );
+  textc.x = 1130;
+  textc.y = 920;
+  app.stage.addChild(textc);
+
+  const stateDefault4 = await createSprite(
+    "./images/StateDefault.webp",
+    { x: elementX - 460, y: 780 },
+    { width: 160, height: 160 }
+  );
+  const textd = new Text("Attract relevant foreign talents for the economy", {
+    fontFamily: "Arial",
+    fontSize: 16,
+    fill: 0xffffff,
+    wordWrap: true,
+    wordWrapWidth: 210,
+    align: "center",
+  });
+  textd.x = 780;
+  textd.y = 870;
+  app.stage.addChild(textd);
+
 })();
