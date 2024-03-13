@@ -8,40 +8,56 @@ import {
   Texture,
   Sprite,
 } from "pixi.js";
+import { Viewport } from "pixi-viewport";
 
 (async () => {
   // const Application = Application;
-  const app = new Application();
-  await app.init({
-    backgroundColor: 0x1F2041,
+  const app = new Application({
+    backgroundColor: 0x1f2041,
     resizeTo: window,
     antialias: true,
   });
 
-  // Create a texture from the image file
-  await Assets.load(["/images/Center.webp", "/images/Vignette.webp"]);
-
-  // Create a texture from the image file
-  const texture = Texture.from("/images/Center.webp");
-
-  // Create a sprite using the texture
-  const sprite = new Sprite(texture);
-
-  // Center the sprite
-  sprite.anchor.set(0.5, 0.5);
-  sprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
-  sprite.position.y = app.screen.height / 2;
-  sprite.width = 1213;
-  sprite.height = 1080;
-  app.stage.addChild(sprite);
-
   // Append the application canvas to the document body
-  document.body.appendChild(app.canvas);
+  document.body.appendChild(app.view);
+  const stage = new Container({ sortableChildren: true, isRenderGroup: true });
+  app.stage.addChild(stage);
+
+  // create viewport
+  const viewport = new Viewport({
+    events: app.renderer.events, // the events module is important for wheel to work properly when renderer.view is placed or scaled
+  });
+  viewport.screenWidth = window.innerWidth;
+  viewport.screenHeight = window.innerHeight;
+  viewport.worldWidth = 5000;
+  viewport.worldHeight = 5000;
+
+  // add the viewport to the stage
+  app.stage.addChild(viewport);
+
+  // activate plugins
+  viewport.pinch().wheel().decelerate().drag();
+
+  //  create a global Container
+  const worldContainer = new Container();
+  worldContainer.width = window.innerWidth;
+  worldContainer.height = window.innerHeight;
+  viewport.addChild(worldContainer);
+  // create a Centered Container for the Circles
+  const centeredContainer = new Container();
+
+  centeredContainer.x = window.innerWidth / 2 - 1000;
+  centeredContainer.y = 0;
+  centeredContainer.width = 1213;
+  centeredContainer.height = window.innerHeight;
+  centeredContainer.eventMode = "static";
+
+  worldContainer.addChild(centeredContainer);
 
   //   WE use absolute for complete window for not occur scrolldown
-  app.canvas.style.position = "absolute";
-  app.canvas.style.top = 0;
-  app.canvas.style.left = 0;
+  app.view.style.position = "absolute";
+  app.view.style.top = 0;
+  app.view.style.left = 0;
 
   // Load the star texture
   const starTexture = await Assets.load("/images/bg-star.png");
@@ -66,7 +82,7 @@ import {
     star.sprite.anchor.x = 0.5;
     star.sprite.anchor.y = 0.7;
     randomizeStar(star, true);
-    app.stage.addChild(star.sprite);
+    worldContainer.addChild(star.sprite);
     stars.push(star);
   }
 
@@ -115,9 +131,6 @@ import {
   });
 
   // Create a texture from the image file
-  const bgOverlay = await Assets.load(["/images/Center.webp", "/images/Vignette.webp"]);
-
-  // Create a texture from the image file
   const CenterImagetexture = await Assets.load("/images/Center.webp");
 
   // Create a sprite using the texture
@@ -125,29 +138,24 @@ import {
 
   // Center the sprite
   centerImageSprite.anchor.set(0.5, 0.5);
-  centerImageSprite.position.x = app.screen.width / 2; // Set X position to the center of the stage
-  centerImageSprite.position.y = app.screen.height / 2;
+  centerImageSprite.x = app.screen.width / 2; // Set X position to the center of the stage
+  centerImageSprite.y = app.screen.height / 2;
   centerImageSprite.width = 1213;
   centerImageSprite.height = 1080;
-  app.stage.addChild(centerImageSprite);
-
-  // Create a sprite using the texture
-  const bgOverlaySprite = new Sprite(bgOverlay);
-  bgOverlaySprite.width = window.innerWidth;
-  bgOverlaySprite.height = window.innerHeight;
-  app.stage.addChild(bgOverlaySprite);
-
-  const stage = new Container();
-  app.stage.addChild(stage);
+  centeredContainer.addChild(centerImageSprite);
 
   function createEllipse(ellipseTexture, x, y, width, height, text) {
     // Create a circle
     const circleContainer = new Container();
+    circleContainer.x = x;
+    circleContainer.y = y;
+    circleContainer.width = width;
+    circleContainer.height = height;
+    circleContainer.eventMode = "static";
+
     const ellipseSprite = new Sprite(ellipseTexture);
 
     ellipseSprite.anchor.set(0.5);
-    ellipseSprite.position.x = x;
-    ellipseSprite.position.y = y;
 
     // Ellipse's width and height
     ellipseSprite.width = width;
@@ -155,33 +163,35 @@ import {
 
     // Add text to the circle
     const textStyle = new TextStyle({
-      fontSize: 16,
-      fill: 0x000000, // Black text color
+      fontSize: 16.43,
+      fill: 0xffffff, // Black text color
       wordWrap: true,
-      // wordWrapWidth: radius * 2, // Wrap text within the circle
+      wordWrapWidth: ellipseSprite.width,
       align: "center",
     });
 
     // Enable the Ellipse to be interactive... this will allow it to respond to mouse and touch events
-    ellipseSprite.eventMode = "static";
+    circleContainer.eventMode = "static";
 
     // This button mode will mean the hand cursor appears when you roll over the Ellipse with your mouse
-    ellipseSprite.cursor = "pointer";
+    circleContainer.cursor = "pointer";
 
     // Setup events for mouse + touch using the pointer events
-    ellipseSprite.on("pointerdown", onDragStart, ellipseSprite);
+    circleContainer.on("pointerdown", onDragStart, circleContainer);
 
     // Move the sprite to its designated position
-    ellipseSprite.x = x;
-    ellipseSprite.y = y;
+    circleContainer.x = x;
+    circleContainer.y = y;
 
-    const textObject = new Text({ text: text, textStyle: textStyle });
+    const textObject = new Text(text, textStyle);
     textObject.anchor.set(0.5); // Center the text
+    textObject.x = ellipseSprite.x;
+    textObject.y = ellipseSprite.y;
 
     // Add the circle and text to the stage
     circleContainer.addChild(ellipseSprite);
     circleContainer.addChild(textObject);
-    stage.addChild(circleContainer);
+    centeredContainer.addChild(circleContainer);
   }
 
   const ellipseTexture = await Assets.load("/images/Ellipse-18.png");
@@ -321,27 +331,50 @@ import {
   );
   app.stage.addChild(text6);
 
+  const zoomButtonsContainer = new Container();
+
+  zoomButtonsContainer.width = 128;
+  zoomButtonsContainer.height = 56;
+  zoomButtonsContainer.x = (window.innerWidth / 100) * 3.75;
+  zoomButtonsContainer.y = (window.innerHeight / 100) * 88.15;
+
   // Load the first image
-  const imageTexturebtnplus = await Assets.load("./images/buttonminus.png");
+  const imageTexturebtnplus = await Assets.load("./images/buttonplus.png");
   const imageSpritebtnplus = new Sprite(imageTexturebtnplus);
-  imageSpritebtnplus.x = 62;
-  imageSpritebtnplus.y = 952;
-  imageSpritebtnplus.anchor.set(0.5);
-  app.stage.addChild(imageSpritebtnplus);
+  imageSpritebtnplus.x = 72;
 
   // Load the second image
-  const imageTexturebtnminus = await Assets.load("./images/buttonplus.png");
+  const imageTexturebtnminus = await Assets.load("./images/buttonminus.png");
   const imageSpritebtnminus = new Sprite(imageTexturebtnminus);
-  imageSpritebtnminus.x = 130;
-  imageSpritebtnminus.y = 952;
-  imageSpritebtnminus.anchor.set(0.5);
-  app.stage.addChild(imageSpritebtnminus);
+  zoomButtonsContainer.addChild(imageSpritebtnminus);
+  zoomButtonsContainer.addChild(imageSpritebtnplus);
+  app.stage.addChild(zoomButtonsContainer);
 
+  // enable interactivity with buttons
+  imageSpritebtnminus.eventMode = "static";
+  imageSpritebtnplus.eventMode = "static";
+  // add Zoomin and Zoomout event listeners to buttons
+  imageSpritebtnminus.on("pointerdown", zoomOut);
+  imageSpritebtnplus.on("pointerdown", zoomIn);
   // adding cursor
   const imageTexturecursor = await Assets.load("./images/cursor.png");
   const imageSpritecursor = new Sprite(imageTexturecursor);
-  imageSpritecursor.x = 1474;
-  imageSpritecursor.y = 817;
+  imageSpritecursor.x = (window.innerWidth / 100) * 76.88;
+  imageSpritecursor.y = (window.innerHeight / 100) * 75.65;
   imageSpritecursor.anchor.set(0.5);
-  app.stage.addChild(imageSpritecursor);
+  worldContainer.addChild(imageSpritecursor);
+
+  let scale = 1;
+
+  // Function to handle zoom in
+  function zoomIn() {
+    scale *= 1.1; // Increase scale by 10%
+    centeredContainer.scale.set(scale);
+  }
+
+  // Function to handle zoom out
+  function zoomOut() {
+    scale /= 1.1; // Decrease scale by 10%
+    centeredContainer.scale.set(scale);
+  }
 })();
