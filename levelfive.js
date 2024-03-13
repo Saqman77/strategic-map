@@ -10,13 +10,12 @@ import {
 } from "pixi.js";
 
 (async () => {
-  const app = new Application();
-  await app.init({
+  const app = new Application({
     backgroundColor: 0x23395d,
     resizeTo: window,
     antialias: true,
   });
-  document.body.appendChild(app.canvas);
+  document.body.appendChild(app.view);
   // level five cricle opecity and images
   async function createCircle(
     x,
@@ -28,7 +27,7 @@ import {
     innerHeight = 100
   ) {
     const circle = new Graphics();
-    circle.circle(x, y, radius).fill(0xffffff, 0.1);
+    circle.drawCircle(x, y, radius).beginFill(0xffffff, 0.1).endFill();
 
     const innerImage = await Assets.load(innerImagePath);
     const spriteInner = new Sprite(innerImage);
