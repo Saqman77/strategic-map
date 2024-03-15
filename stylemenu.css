@@ -1,0 +1,27 @@
+
+.font-style{
+    color: #cdcdcd;
+    width: 280px;
+    font-size: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+#content3{
+    width: 200px;
+}
+#dropdown{
+background-color: transparent;
+border: none;
+}
+body {
+    background-color: #1f2041;
+}
+.white-image {
+    /* filter: brightness(0) invert(1); */
+     /* width: 10px;
+    height: 5px;  */
+    
+
+}
+#hello{
+    background-color: blueviolet;
+}
