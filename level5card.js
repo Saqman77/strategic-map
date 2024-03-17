@@ -1,27 +1,25 @@
-// Get the image container
-const imageContainer = document.querySelector(".card2images");
+document.addEventListener("DOMContentLoaded", function () {
+  const card2images = document.querySelector(".card2images"); // Selecting the card2images container
+  let isMouseDown = false;
+  let startX;
+  let startScrollLeft;
 
-// Event listener for clicking on an image
-imageContainer.addEventListener("click", function (e) {
-    // Get the clicked image
-    const clickedImage = e.target;
-    
-    // Calculate the new scroll position based on the clicked image's position
-    const newScrollLeft = clickedImage.offsetLeft - imageContainer.offsetLeft;
-    
-    // Scroll to the new position
-    imageContainer.scrollLeft = newScrollLeft;
-});
+  card2images.addEventListener("mousedown", (e) => {
+    e.preventDefault(); // Prevent default behavior (such as image copying)
+    isMouseDown = true;
+    startX = e.pageX;
+    startScrollLeft = card2images.scrollLeft;
+  });
 
-// Event listener for clicking on the container to scroll back to the previous image
-imageContainer.addEventListener("click", function (e) {
-    const clickedImage = e.target;
-    const newScrollLeft = clickedImage.offsetLeft - imageContainer.offsetLeft;
-    if (newScrollLeft === imageContainer.scrollLeft) {
-        const previousImage = clickedImage.previousElementSibling;
-        if (previousImage) {
-            const previousScrollLeft = previousImage.offsetLeft - imageContainer.offsetLeft;
-            imageContainer.scrollLeft = previousScrollLeft;
-        }
+  document.addEventListener("mouseup", () => {
+    isMouseDown = false;
+  });
+
+  card2images.addEventListener("mousemove", (e) => {
+    if (isMouseDown) {
+      e.preventDefault(); // Prevent default behavior (such as image copying)
+      const distance = e.pageX - startX;
+      card2images.scrollLeft = startScrollLeft - distance;
     }
+  });
 });
