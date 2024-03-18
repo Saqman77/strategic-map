@@ -11,13 +11,12 @@ import {
 
 (async () => {
   // const Application = Application;
-  const app = new Application();
-  await app.init({
-    backgroundColor: 0x23395d,
+  const app = new Application({
+    backgroundColor: 0x1f2041,
     resizeTo: window,
     antialias: true,
   });
-  document.body.appendChild(app.canvas);
+  document.body.appendChild(app.view);
 
   // Call the function to create images with text
 

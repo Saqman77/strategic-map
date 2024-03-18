@@ -9,6 +9,7 @@ import {
   Sprite,
 } from "pixi.js";
 import { Viewport } from "pixi-viewport";
+import { gsap } from "gsap"
 
 (async () => {
   // const Application = Application;
@@ -23,14 +24,19 @@ import { Viewport } from "pixi-viewport";
   const stage = new Container({ sortableChildren: true, isRenderGroup: true });
   app.stage.addChild(stage);
 
+  //   WE use absolute for complete window for not occur scrolldown
+  app.view.style.position = "absolute";
+  app.view.style.top = 0;
+  app.view.style.left = 0;
+
   // create viewport
   const viewport = new Viewport({
     events: app.renderer.events, // the events module is important for wheel to work properly when renderer.view is placed or scaled
   });
   viewport.screenWidth = window.innerWidth;
   viewport.screenHeight = window.innerHeight;
-  viewport.worldWidth = 5000;
-  viewport.worldHeight = 5000;
+  viewport.worldWidth = window.innerWidth;
+  viewport.worldHeight = window.innerHeight;
 
   // add the viewport to the stage
   app.stage.addChild(viewport);
@@ -40,95 +46,96 @@ import { Viewport } from "pixi-viewport";
 
   //  create a global Container
   const worldContainer = new Container();
+  worldContainer.pivot.x = worldContainer.width / 2;
+  worldContainer.pivot.y = worldContainer.height / 2;
   worldContainer.width = window.innerWidth;
   worldContainer.height = window.innerHeight;
   viewport.addChild(worldContainer);
+
   // create a Centered Container for the Circles
   const centeredContainer = new Container();
-
-  centeredContainer.x = window.innerWidth / 2 - 1000;
-  centeredContainer.y = 0;
+  centeredContainer.pivot.x = centeredContainer.width / 2;
+  centeredContainer.pivot.y = centeredContainer.height / 2;
+  centeredContainer.x = window.innerWidth / 2;
+  centeredContainer.y = window.innerHeight / 2;
   centeredContainer.width = 1213;
   centeredContainer.height = window.innerHeight;
   centeredContainer.eventMode = "static";
 
   worldContainer.addChild(centeredContainer);
 
-  //   WE use absolute for complete window for not occur scrolldown
-  app.view.style.position = "absolute";
-  app.view.style.top = 0;
-  app.view.style.left = 0;
+  // Create different containers for each level
 
-  // Load the star texture
-  const starTexture = await Assets.load("/images/bg-star.png");
+  // // Load the star texture
+  // const starTexture = await Assets.load("/images/bg-star.png");
 
-  const starAmount = 1000;
-  let cameraZ = 0;
-  const fov = 20;
-  const baseSpeed = 0.025;
-  let speed = 0;
+  // const starAmount = 1000;
+  // let cameraZ = 0;
+  // const fov = 20;
+  // const baseSpeed = 0.025;
+  // let speed = 0;
 
-  // Create the stars
-  const stars = [];
+  // // Create the stars
+  // const stars = [];
 
-  for (let i = 0; i < starAmount; i++) {
-    const star = {
-      sprite: new Sprite(starTexture),
-      z: 0,
-      x: 0,
-      y: 0,
-    };
+  // for (let i = 0; i < starAmount; i++) {
+  //   const star = {
+  //     sprite: new Sprite(starTexture),
+  //     z: 0,
+  //     x: 0,
+  //     y: 0,
+  //   };
 
-    star.sprite.anchor.x = 0.5;
-    star.sprite.anchor.y = 0.7;
-    randomizeStar(star, true);
-    worldContainer.addChild(star.sprite);
-    stars.push(star);
-  }
+  //   star.sprite.anchor.x = 0.5;
+  //   star.sprite.anchor.y = 0.7;
+  //   randomizeStar(star, true);
+  //   viewport.addChild(star.sprite);
+  //   stars.push(star);
+  // }
 
-  function randomizeStar(star, initial) {
-    star.z = initial
-      ? Math.random() * 2000
-      : cameraZ + Math.random() * 1000 + 2000;
+  // function randomizeStar(star, initial) {
+  //   star.z = initial
+  //     ? Math.random() * 2000
+  //     : cameraZ + Math.random() * 1000 + 2000;
 
-    // Calculate star positions with radial random coordinate so no star hits the camera.
-    const deg = Math.random() * Math.PI * 2;
-    const distance = Math.random() * 50 + 1;
+  //   // Calculate star positions with radial random coordinate so no star hits the camera.
+  //   const deg = Math.random() * Math.PI * 2;
+  //   const distance = Math.random() * 50 + 1;
 
-    star.x = Math.cos(deg) * distance;
-    star.y = Math.sin(deg) * distance;
-  }
+  //   star.x = Math.cos(deg) * distance;
+  //   star.y = Math.sin(deg) * distance;
+  // }
 
-  // Listen for animate update
-  app.ticker.add((time) => {
-    // Simple easing. This should be changed to proper easing function when used for real.
-    speed += speed / 20;
-    cameraZ += time.deltaTime * 10 * (speed + baseSpeed);
-    for (let i = 0; i < starAmount; i++) {
-      const star = stars[i];
+  // // Listen for animate update
+  // app.ticker.add((time) => {
+  //   // Simple easing. This should be changed to proper easing function when used for real.
+  //   speed += speed / 20;
+  //   cameraZ += time.deltaTime * 10 * (speed + baseSpeed);
+  //   for (let i = 0; i < starAmount; i++) {
+  //     const star = stars[i];
 
-      if (star.z < cameraZ) randomizeStar(star);
+  //     if (star.z < cameraZ) randomizeStar(star);
 
-      // Map star 3d position to 2d with really simple projection
-      const z = star.z - cameraZ;
+  //     // Map star 3d position to 2d with really simple projection
+  //     const z = star.z - cameraZ;
 
-      star.sprite.x =
-        star.x * (fov / z) * app.renderer.screen.width +
-        app.renderer.screen.width / 2;
-      star.sprite.y =
-        star.y * (fov / z) * app.renderer.screen.width +
-        app.renderer.screen.height / 2;
+  //     star.sprite.x =
+  //       star.x * (fov / z) * app.renderer.screen.width +
+  //       app.renderer.screen.width / 2;
+  //     star.sprite.y =
+  //       star.y * (fov / z) * app.renderer.screen.width +
+  //       app.renderer.screen.height / 2;
 
-      // Calculate star scale & rotation.
-      const dxCenter = star.sprite.x - app.renderer.screen.width / 2;
-      const dyCenter = star.sprite.y - app.renderer.screen.height / 2;
-      // const distanceCenter = Math.sqrt(
-      //   dxCenter * dxCenter + dyCenter * dyCenter
-      // );
+  //     // Calculate star scale & rotation.
+  //     const dxCenter = star.sprite.x - app.renderer.screen.width / 2;
+  //     const dyCenter = star.sprite.y - app.renderer.screen.height / 2;
+  //     // const distanceCenter = Math.sqrt(
+  //     //   dxCenter * dxCenter + dyCenter * dyCenter
+  //     // );
 
-      star.sprite.rotation = Math.atan2(dyCenter, dxCenter) + Math.PI / 2;
-    }
-  });
+  //     star.sprite.rotation = Math.atan2(dyCenter, dxCenter) + Math.PI / 2;
+  //   }
+  // });
 
   // Create a texture from the image file
   const CenterImagetexture = await Assets.load("/images/Center.webp");
@@ -138,19 +145,29 @@ import { Viewport } from "pixi-viewport";
 
   // Center the sprite
   centerImageSprite.anchor.set(0.5, 0.5);
-  centerImageSprite.x = app.screen.width / 2; // Set X position to the center of the stage
-  centerImageSprite.y = app.screen.height / 2;
+  // centerImageSprite.x = app.screen.width / 2; // Set X position to the center of the stage
+  // centerImageSprite.y = app.screen.height / 2;
   centerImageSprite.width = 1213;
   centerImageSprite.height = 1080;
   centeredContainer.addChild(centerImageSprite);
 
-  function createEllipse(ellipseTexture, x, y, width, height, text) {
+  // Function to create Ellipse containing text inside
+  function createEllipseWithTextInside(
+    ellipseTexture,
+    x,
+    y,
+    width,
+    height,
+    text
+  ) {
     // Create a circle
     const circleContainer = new Container();
     circleContainer.x = x;
     circleContainer.y = y;
     circleContainer.width = width;
     circleContainer.height = height;
+    circleContainer.pivot.x = circleContainer.width / 2;
+    circleContainer.pivot.y = circleContainer.height / 2;
     circleContainer.eventMode = "static";
 
     const ellipseSprite = new Sprite(ellipseTexture);
@@ -166,7 +183,7 @@ import { Viewport } from "pixi-viewport";
       fontSize: 16.43,
       fill: 0xffffff, // Black text color
       wordWrap: true,
-      wordWrapWidth: ellipseSprite.width,
+      wordWrapWidth: ellipseSprite.width - 50,
       align: "center",
     });
 
@@ -177,7 +194,8 @@ import { Viewport } from "pixi-viewport";
     circleContainer.cursor = "pointer";
 
     // Setup events for mouse + touch using the pointer events
-    circleContainer.on("pointerdown", onDragStart, circleContainer);
+    // circleContainer.on("pointerdown", onDragStart, circleContainer);
+    circleContainer.on("pointerdown", activateNextLevel);
 
     // Move the sprite to its designated position
     circleContainer.x = x;
@@ -189,36 +207,42 @@ import { Viewport } from "pixi-viewport";
     textObject.y = ellipseSprite.y;
 
     // Add the circle and text to the stage
+    ellipseSprite.addChild(textObject);
     circleContainer.addChild(ellipseSprite);
-    circleContainer.addChild(textObject);
-    centeredContainer.addChild(circleContainer);
+    // worldContainer.addChild(circleContainer);
+    return circleContainer;
   }
 
-  const ellipseTexture = await Assets.load("/images/Ellipse-18.png");
-  createEllipse(
-    ellipseTexture,
+  const level1EllipseTexture = await Assets.load("/images/Ellipse18.png");
+
+  const circleLevel1a = createEllipseWithTextInside(
+    level1EllipseTexture,
     (window.innerWidth / 100) * 27.5 + 117.385,
     (window.innerHeight / 100) * 11.5 + 117.385,
     234.77,
     234.77,
     "A vibrant society"
   );
-  createEllipse(
-    ellipseTexture,
+  worldContainer.addChild(circleLevel1a);
+  const circleLevel1b = createEllipseWithTextInside(
+    level1EllipseTexture,
     (window.innerWidth / 100) * 28 + 117.385,
     (window.innerHeight / 100) * 75.8 + 117.385,
     234.77,
     234.77,
     "A thriving economy"
   );
-  createEllipse(
-    ellipseTexture,
+  worldContainer.addChild(circleLevel1b);
+  const circleLevel1c = createEllipseWithTextInside(
+    level1EllipseTexture,
     (window.innerWidth / 100) * 68.12 + 117.385,
     (window.innerHeight / 100) * 33.2 + 117.385,
     234.77,
     234.77,
     "An ambitious nation"
   );
+
+  worldContainer.addChild(circleLevel1c);
 
   // Enable Dragging on ellipses
   let dragTarget = null;
@@ -354,8 +378,12 @@ import { Viewport } from "pixi-viewport";
   imageSpritebtnminus.eventMode = "static";
   imageSpritebtnplus.eventMode = "static";
   // add Zoomin and Zoomout event listeners to buttons
-  imageSpritebtnminus.on("pointerdown", zoomOut);
-  imageSpritebtnplus.on("pointerdown", zoomIn);
+  imageSpritebtnminus.on("pointerdown", () => {
+    viewport.zoomPercent(-0.1, true);
+  });
+  imageSpritebtnplus.on("pointerdown", () => {
+    viewport.zoomPercent(0.1, true);
+  });
   // adding cursor
   const imageTexturecursor = await Assets.load("./images/cursor.png");
   const imageSpritecursor = new Sprite(imageTexturecursor);
@@ -364,17 +392,262 @@ import { Viewport } from "pixi-viewport";
   imageSpritecursor.anchor.set(0.5);
   worldContainer.addChild(imageSpritecursor);
 
-  let scale = 1;
+  /////////////////////////////////////////////////////////////////////////////////
+  // Level 2
+  // async function createSprite(texturePath, position, size) {
+  //   const texture = await Assets.load(texturePath);
+  //   const sprite = new Sprite(texture);
+  //   sprite.anchor.set(0.5, 0.5);
+  //   sprite.position.set(position.x, position.y);
+  //   sprite.width = size.width;
+  //   sprite.height = size.height;
+  //   return sprite;
+  // }
 
-  // Function to handle zoom in
-  function zoomIn() {
-    scale *= 1.1; // Increase scale by 10%
-    centeredContainer.scale.set(scale);
+  const level2EllipseTexture = await Assets.load("/images/2ndlevel-circle.png");
+
+  const circleLevel2a = createEllipseWithTextInside(
+    level2EllipseTexture,
+    250,
+    -250,
+    227.74,
+    227.74,
+    "Grow and diversify the economy"
+  );
+
+  const circleLevel2b = createEllipseWithTextInside(
+    level2EllipseTexture,
+    350,
+    200,
+    227.74,
+    227.74,
+    "Increase employment"
+  );
+  circleLevel2a.visible = false;
+  circleLevel2b.visible = false;
+
+  circleLevel1c.addChild(circleLevel2a, circleLevel2b);
+
+  /////////////////////////////////////////////////////////////////////////////////
+  // Level 3
+
+  // Function to create Ellipse containing text outside
+  function createEllipseWithTextOutside(
+    ellipseTexture,
+    x,
+    y,
+    width,
+    height,
+    text
+  ) {
+    // Create a circle
+    const circleContainer = new Container();
+    circleContainer.x = x;
+    circleContainer.y = y;
+    circleContainer.width = width;
+    circleContainer.height = height;
+    circleContainer.pivot.x = circleContainer.width / 2;
+    circleContainer.pivot.y = circleContainer.height / 2;
+    circleContainer.eventMode = "static";
+
+    const ellipseSprite = new Sprite(ellipseTexture);
+
+    ellipseSprite.anchor.set(0.5);
+
+    // Ellipse's width and height
+    ellipseSprite.width = width;
+    ellipseSprite.height = height;
+
+    // Add text to the circle
+    const textStyle = new TextStyle({
+      fontSize: 16.43,
+      fill: 0xffffff, // Black text color
+      wordWrap: true,
+      wordWrapWidth: 250,
+      align: "center",
+    });
+
+    // Enable the Ellipse to be interactive... this will allow it to respond to mouse and touch events
+    circleContainer.eventMode = "static";
+
+    // This button mode will mean the hand cursor appears when you roll over the Ellipse with your mouse
+    circleContainer.cursor = "pointer";
+
+    // Setup events for mouse + touch using the pointer events
+    // circleContainer.on("pointerdown", onDragStart, circleContainer);
+    circleContainer.on("pointerdown", activateNextLevel);
+
+    // Move the sprite to its designated position
+    circleContainer.x = x;
+    circleContainer.y = y;
+
+    const textObject = new Text(text, textStyle);
+    textObject.anchor.set(0.5); // Center the text
+    textObject.x = ellipseSprite.x;
+    textObject.y = ellipseSprite.y + 140;
+
+    // Add the circle and text to the stage
+    ellipseSprite.addChild(textObject);
+    circleContainer.addChild(ellipseSprite);
+    return circleContainer;
   }
 
-  // Function to handle zoom out
-  function zoomOut() {
-    scale /= 1.1; // Decrease scale by 10%
-    centeredContainer.scale.set(scale);
+  const level3EllipseTexture = await Assets.load(
+    "/images/3rdlevel-circle.webp"
+  );
+  const circleLevel3a = createEllipseWithTextOutside(
+    level3EllipseTexture,
+    330,
+    -210,
+    200,
+    200,
+    "Develop Human Capital in line with labor market needs"
+  );
+  const circleLevel3b = createEllipseWithTextOutside(
+    level3EllipseTexture,
+    400,
+    60,
+    160,
+    160,
+    "Ensuring equal access to job opportunities"
+  );
+  const circleLevel3c = createEllipseWithTextOutside(
+    level3EllipseTexture,
+    310,
+    300,
+    180,
+    180,
+    "Enable job creation through SMEs and Micro-enterprises"
+  );
+  const circleLevel3d = createEllipseWithTextOutside(
+    level3EllipseTexture,
+    -50,
+    300,
+    160,
+    160,
+    "Attract relevant foreign talents for the economy"
+  );
+  circleLevel2b.addChild(
+    circleLevel3a,
+    circleLevel3b,
+    circleLevel3c,
+    circleLevel3d
+  );
+  circleLevel3a.visible = false;
+  circleLevel3b.visible = false;
+  circleLevel3c.visible = false;
+  circleLevel3d.visible = false;
+
+  // ====================== Level 3 End ======================
+  // ====================== Level 4 Start ======================
+  const level4EllipseTexture = await Assets.load("/images/4thlevel-circle.png");
+  const circleLevel4a = createEllipseWithTextOutside(
+    level4EllipseTexture,
+    150,
+    -260,
+    132.21,
+    132.21,
+    "Improve readiness of youth to enter the labor market"
+  );
+  const circleLevel4b = createEllipseWithTextOutside(
+    level4EllipseTexture,
+    475,
+    -30,
+    132.21,
+    132.21,
+    "Increase women participation in the labor market"
+  );
+  const circleLevel4c = createEllipseWithTextOutside(
+    level4EllipseTexture,
+    170,
+    300,
+    132.21,
+    132.21,
+    "Enable integration of people with disabilities in the labor market"
+  );
+  circleLevel3b.addChild(circleLevel4a, circleLevel4b, circleLevel4c);
+  circleLevel4a.visible = false;
+  circleLevel4b.visible = false;
+  circleLevel4c.visible = false;
+
+  // ====================== Level 4 End ======================
+  // ====================== Level 5 Start======================
+  const level5EllipseTexture = await Assets.load("/images/5thlevel-circle.png");
+  const circleLevel5a = createEllipseWithTextOutside(
+    level5EllipseTexture,
+    338.2,
+    0,
+    200,
+    200,
+    "National Transformation Program"
+  );
+  circleLevel4b.addChild(circleLevel5a);
+  circleLevel5a.visible = false;
+  // ====================== Level 5 End======================
+  // ================================
+  //=============== Activate Next Level on Click ===============
+  let activeLevel = 1;
+
+  // Handle CLick function for circles
+  function activateNextLevel(e) {
+    e.stopPropagation();
+    const target = this;
+    // target.parent.x = window.innerWidth / 4;
+    // target.parent.y = window.innerHeight / 2;
+    
+    // target.x = target.parent.width;
+    // target.y = target.parent.height /2 ;
+    // viewport.moveCenter(e.clientX, e.clientY)
+
+    if (activeLevel === 1) {
+      hideSiblings(target);
+      activateLevel2(target);
+    } else if (activeLevel === 2) {
+      hideSiblings(target);
+      activateLevel3(target);
+    } else if (activeLevel === 3) {
+      hideSiblings(target);
+      activateLevel4(target);
+    } else if (activeLevel === 4) {
+      hideSiblings(target);
+      activateLevel5(target);
+    }
   }
+
+  function hideSiblings(target) {
+    target.parent.children.forEach((child) => {
+      child.alpha = 0;
+    });
+    target.alpha = 1;
+    
+  }
+
+  function activateLevel2(target) {
+    circleLevel2a.visible = true;
+    circleLevel2b.visible = true;
+    activeLevel = 2;
+    gsap.to(target, { x: window.innerWidth / 2,y: window.innerHeight / 2, duration: 1 });
+  }
+
+  function activateLevel3(target) {
+    circleLevel3a.visible = true;
+    circleLevel3b.visible = true;
+    circleLevel3c.visible = true;
+    circleLevel3d.visible = true;
+    activeLevel = 3;
+    gsap.to(target, { x: 0,y: 0, duration: 1 });
+  }
+  function activateLevel4(target) {
+    circleLevel4a.visible = true;
+    circleLevel4b.visible = true;
+    circleLevel4c.visible = true;
+    activeLevel = 4;
+    gsap.to(target, { x: 0,y: 0, duration: 1 });
+  }
+  function activateLevel5(target) {
+    circleLevel5a.visible = true;
+    activeLevel = 5;
+    gsap.to(target, { x: 0,y: 0, duration: 1 });
+  }
+  //=============== Activate Next Level on Click END ===============
 })();

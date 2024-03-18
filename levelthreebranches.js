@@ -11,16 +11,16 @@ import {
 
 (async () => {
   // const Application = Application;
-  const app = new Application();
-  await app.init({
+  const app = new Application({
     backgroundColor: 0x1f2041,
     resizeTo: window,
     antialias: true,
   });
+  document.body.appendChild(app.view);
   await Assets.load(["/images/Center.webp", "/images/Vignette.webp"]);
-  app.canvas.style.position = "absolute";
-  app.canvas.style.top = 0;
-  app.canvas.style.left = 0;
+  app.view.style.position = "absolute";
+  app.view.style.top = 0;
+  app.view.style.left = 0;
   const starTexture = await Assets.load("/images/bg-star.png");
 
   const starAmount = 1000;
@@ -269,8 +269,6 @@ import {
 
   createImagesWithText();
   //////////////////////////////////////
-
-  document.body.appendChild(app.canvas);
 
   const margin = 600; // Right side margin in Figma
   const containerWidthx = window.innerWidth; // Width of the container
