@@ -168,6 +168,7 @@ import {
     276
   );
   app.stage.addChild(text6);
+
   const imageTexturebtnplus = await Assets.load("./images/buttonminus.png");
   const imageSpritebtnplus = new Sprite(imageTexturebtnplus);
   imageSpritebtnplus.x = 62;

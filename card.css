@@ -1,0 +1,48 @@
+.cardcont {
+  background-color: #1c1c1c;
+  /* margin-left: 1459px; */
+  margin-top: 144px;
+  width: 450px;
+  height: 936px;
+  padding: 24px;
+  gap: 32px;
+  border-radius: 16px 0px 0px 0px;
+  position: fixed;
+  right: 0px;
+}
+
+#arrow {
+  width: 413px;
+  height: 56px;
+  gap: 10px;
+}
+
+#heading p {
+  width: 413px;
+  height: 90px;
+  font-family: "bukra";
+  color: #ffffff;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 44.8px;
+}
+
+.text p {
+  width: 100%;
+  height: 58px;
+  font-family: "bukra";
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 58px;
+}
+
+.text p:hover {
+  background-color: #4e4b7d;
+  margin-left: -20px;
+  padding: 10px 22px 10px 22px;
+}
+
+a {
+  text-decoration: none;
+}

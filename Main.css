@@ -1,0 +1,92 @@
+body {
+  background-color: rgba(31, 32, 65, 1);
+
+  font-family: "29LT Bukra", sans-serif;
+}
+
+.strategic-container {
+  position: absolute;
+  left: 72px;
+  top: 199px;
+  color: rgba(237, 232, 252, 1);
+}
+
+#heading {
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 76.8px;
+  width: 430px;
+  height: 154px;
+}
+
+#innertext {
+  width: 430px;
+  height: 87px;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 28.8px;
+  color: rgba(255, 255, 255, 1);
+}
+
+.zoom {
+  position: absolute;
+  top: 953px;
+  left: 72px;
+  gap: 16px;
+}
+
+#plus {
+  margin-left: -10px;
+}
+
+#cursor {
+  position: absolute;
+  top: 778px;
+  width: 124px;
+  height: 124px;
+  right: 320px;
+}
+
+.overarching-objectives {
+  position: absolute;
+  width: 272px;
+  height: 136px;
+  color: rgba(232, 232, 232, 1);
+  right: 72px;
+  top: 196px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.col {
+  width: 14px;
+  height: 29px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 28.8px;
+}
+
+.colsec {
+  width: 197px;
+  height: 26px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25.6px;
+}
+
+hr {
+  width: 272px;
+  height: 0.5px;
+  background-color: rgba(85, 85, 85, 1);
+}
+
+#colsec-sec {
+  width: 154px;
+  height: 26px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 25.6px;
+}
