@@ -9,7 +9,7 @@ import {
   Sprite,
 } from "pixi.js";
 import { Viewport } from "pixi-viewport";
-import { gsap } from "gsap"
+import { gsap } from "gsap";
 
 (async () => {
   // const Application = Application;
@@ -21,7 +21,7 @@ import { gsap } from "gsap"
 
   // Append the application canvas to the document body
   document.body.appendChild(app.view);
-  const stage = new Container({ sortableChildren: true, isRenderGroup: true });
+  const stage = new Container({ isRenderGroup: true });
   app.stage.addChild(stage);
 
   //   WE use absolute for complete window for not occur scrolldown
@@ -64,78 +64,77 @@ import { gsap } from "gsap"
 
   worldContainer.addChild(centeredContainer);
 
-  // Create different containers for each level
-
   // // Load the star texture
-  // const starTexture = await Assets.load("/images/bg-star.png");
+  const starTexture = await Assets.load("/images/bg-star.png");
 
-  // const starAmount = 1000;
-  // let cameraZ = 0;
-  // const fov = 20;
-  // const baseSpeed = 0.025;
-  // let speed = 0;
+  const starAmount = 1000;
+  let cameraZ = 0;
+  const fov = 20;
+  const baseSpeed = 0.025;
+  let speed = 0;
 
-  // // Create the stars
-  // const stars = [];
+  // Create the stars
+  const stars = [];
 
-  // for (let i = 0; i < starAmount; i++) {
-  //   const star = {
-  //     sprite: new Sprite(starTexture),
-  //     z: 0,
-  //     x: 0,
-  //     y: 0,
-  //   };
+  for (let i = 0; i < starAmount; i++) {
+    const star = {
+      sprite: new Sprite(starTexture),
+      z: 0,
+      x: 0,
+      y: 0,
+    };
 
-  //   star.sprite.anchor.x = 0.5;
-  //   star.sprite.anchor.y = 0.7;
-  //   randomizeStar(star, true);
-  //   viewport.addChild(star.sprite);
-  //   stars.push(star);
-  // }
+    star.sprite.anchor.x = 0.5;
+    star.sprite.anchor.y = 0.7;
+    star.zIndex = 1;
+    randomizeStar(star, true);
+    worldContainer.addChild(star.sprite);
+    stars.push(star);
+  }
 
-  // function randomizeStar(star, initial) {
-  //   star.z = initial
-  //     ? Math.random() * 2000
-  //     : cameraZ + Math.random() * 1000 + 2000;
+  function randomizeStar(star, initial) {
+    star.z = initial
+      ? Math.random() * 2000
+      : cameraZ + Math.random() * 1000 + 2000;
 
-  //   // Calculate star positions with radial random coordinate so no star hits the camera.
-  //   const deg = Math.random() * Math.PI * 2;
-  //   const distance = Math.random() * 50 + 1;
+    // Calculate star positions with radial random coordinate so no star hits the camera.
+    const deg = Math.random() * Math.PI * 2;
+    const distance = Math.random() * 50 + 1;
 
-  //   star.x = Math.cos(deg) * distance;
-  //   star.y = Math.sin(deg) * distance;
-  // }
+    star.x = Math.cos(deg) * distance;
+    star.y = Math.sin(deg) * distance;
+  }
 
-  // // Listen for animate update
-  // app.ticker.add((time) => {
-  //   // Simple easing. This should be changed to proper easing function when used for real.
-  //   speed += speed / 20;
-  //   cameraZ += time.deltaTime * 10 * (speed + baseSpeed);
-  //   for (let i = 0; i < starAmount; i++) {
-  //     const star = stars[i];
+  // Listen for animate update
+  app.ticker.add((time) => {
+    // Simple easing. This should be changed to proper easing function when used for real.
+    speed += speed / 20;
+    cameraZ += time.deltaTime * 10 * (speed + baseSpeed);
+    for (let i = 0; i < starAmount; i++) {
+      const star = stars[i];
 
-  //     if (star.z < cameraZ) randomizeStar(star);
+      if (star.z < cameraZ) randomizeStar(star);
 
-  //     // Map star 3d position to 2d with really simple projection
-  //     const z = star.z - cameraZ;
+      // Map star 3d position to 2d with really simple projection
+      const z = star.z - cameraZ;
 
-  //     star.sprite.x =
-  //       star.x * (fov / z) * app.renderer.screen.width +
-  //       app.renderer.screen.width / 2;
-  //     star.sprite.y =
-  //       star.y * (fov / z) * app.renderer.screen.width +
-  //       app.renderer.screen.height / 2;
+      star.sprite.x =
+        star.x * (fov / z) * app.renderer.screen.width +
+        app.renderer.screen.width / 2;
+      star.sprite.y =
+        star.y * (fov / z) * app.renderer.screen.width +
+        app.renderer.screen.height / 2;
 
-  //     // Calculate star scale & rotation.
-  //     const dxCenter = star.sprite.x - app.renderer.screen.width / 2;
-  //     const dyCenter = star.sprite.y - app.renderer.screen.height / 2;
-  //     // const distanceCenter = Math.sqrt(
-  //     //   dxCenter * dxCenter + dyCenter * dyCenter
-  //     // );
+      // Calculate star scale & rotation.
+      const dxCenter = star.sprite.x - app.renderer.screen.width / 2;
+      const dyCenter = star.sprite.y - app.renderer.screen.height / 2;
+      // const distanceCenter = Math.sqrt(
+      //   dxCenter * dxCenter + dyCenter * dyCenter
+      // );
 
-  //     star.sprite.rotation = Math.atan2(dyCenter, dxCenter) + Math.PI / 2;
-  //   }
-  // });
+      star.sprite.rotation = Math.atan2(dyCenter, dxCenter) + Math.PI / 2;
+    }
+  });
 
   // Create a texture from the image file
   const CenterImagetexture = await Assets.load("/images/Center.webp");
@@ -223,7 +222,6 @@ import { gsap } from "gsap"
     234.77,
     "A vibrant society"
   );
-  worldContainer.addChild(circleLevel1a);
   const circleLevel1b = createEllipseWithTextInside(
     level1EllipseTexture,
     (window.innerWidth / 100) * 28 + 117.385,
@@ -232,7 +230,6 @@ import { gsap } from "gsap"
     234.77,
     "A thriving economy"
   );
-  worldContainer.addChild(circleLevel1b);
   const circleLevel1c = createEllipseWithTextInside(
     level1EllipseTexture,
     (window.innerWidth / 100) * 68.12 + 117.385,
@@ -242,7 +239,7 @@ import { gsap } from "gsap"
     "An ambitious nation"
   );
 
-  worldContainer.addChild(circleLevel1c);
+  worldContainer.addChild(circleLevel1a, circleLevel1b,circleLevel1c);
 
   // Enable Dragging on ellipses
   let dragTarget = null;
@@ -592,62 +589,85 @@ import { gsap } from "gsap"
   function activateNextLevel(e) {
     e.stopPropagation();
     const target = this;
-    // target.parent.x = window.innerWidth / 4;
-    // target.parent.y = window.innerHeight / 2;
-    
-    // target.x = target.parent.width;
-    // target.y = target.parent.height /2 ;
-    // viewport.moveCenter(e.clientX, e.clientY)
 
     if (activeLevel === 1) {
-      hideSiblings(target);
       activateLevel2(target);
     } else if (activeLevel === 2) {
-      hideSiblings(target);
       activateLevel3(target);
     } else if (activeLevel === 3) {
-      hideSiblings(target);
       activateLevel4(target);
     } else if (activeLevel === 4) {
-      hideSiblings(target);
       activateLevel5(target);
     }
   }
-
-  function hideSiblings(target) {
-    target.parent.children.forEach((child) => {
-      child.alpha = 0;
-    });
-    target.alpha = 1;
-    
-  }
-
+  
   function activateLevel2(target) {
+    // Hide previous children
+    circleLevel1a.visible = false;
+    circleLevel1b.visible = false;
+    circleLevel1c.visible = false;
+    // Show Parent and new children
+    target.visible = true;
     circleLevel2a.visible = true;
     circleLevel2b.visible = true;
+
     activeLevel = 2;
-    gsap.to(target, { x: window.innerWidth / 2,y: window.innerHeight / 2, duration: 1 });
+    gsap.to(target, {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      duration: 1,
+    });
+    gsap.to(centerImageSprite, { x: -400, y: 300 , duration: 1 });
+    viewport.animate({scale: 1.2});
   }
 
   function activateLevel3(target) {
+    // Hide previous children
+    circleLevel2a.visible = false;
+    circleLevel2b.visible = false;
+    // Show Parent and new children
+    target.visible = true;
     circleLevel3a.visible = true;
     circleLevel3b.visible = true;
     circleLevel3c.visible = true;
     circleLevel3d.visible = true;
     activeLevel = 3;
-    gsap.to(target, { x: 0,y: 0, duration: 1 });
+    gsap.to(target, { x: 410, y: -310, duration: 1 });
+    gsap.to(circleLevel1c, { x: 555, y: 865, duration: 1 });
+    gsap.to(centerImageSprite, { x: -800, y: 600, duration: 1 });
+    viewport.animate({scale: 1.3});
   }
   function activateLevel4(target) {
+    // Hide previous children
+    circleLevel3a.visible = false;
+    circleLevel3b.visible = false;
+    circleLevel3c.visible = false;
+    circleLevel3d.visible = false;
+    // Show Parent and new children
+    target.visible = true;
     circleLevel4a.visible = true;
     circleLevel4b.visible = true;
     circleLevel4c.visible = true;
     activeLevel = 4;
-    gsap.to(target, { x: 0,y: 0, duration: 1 });
+    gsap.to(target, { x: 410, y: -280, duration: 1 });
+    gsap.to(circleLevel1c, { x: 155, y: 1165, duration: 1 });
+    gsap.to(centerImageSprite, { x: -1200, y: 900, duration: 1 });
+    viewport.animate({scale: 1.4});
+
   }
   function activateLevel5(target) {
+    // Show Parent and new children
+    circleLevel4a.visible = false;
+    circleLevel4b.visible = false;
+    circleLevel4c.visible = false;
+    // Show Parent and new children
+    target.visible = true;
     circleLevel5a.visible = true;
     activeLevel = 5;
-    gsap.to(target, { x: 0,y: 0, duration: 1 });
+    gsap.to(target, { x: 550, y: -340, duration: 1 });
+    gsap.to(circleLevel1c, { x: -355, y: 1465, duration: 1 });
+    gsap.to(centerImageSprite, { x: -1600, y: 1200, duration: 1 });
+    viewport.animate({scale: 1.5});
   }
   //=============== Activate Next Level on Click END ===============
 })();
